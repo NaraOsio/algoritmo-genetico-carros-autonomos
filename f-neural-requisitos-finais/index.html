@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>f-neural</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">f-neural</div>
+    <div class="stats">
+      <span>Modo: <strong id="modeLabel">Manual</strong></span>
+      <span>Pista: <strong id="trackLabel">Interlagos</strong></span>
+      <span>Geração: <strong id="genLabel">0</strong></span>
+      <span>Vivos: <strong id="aliveLabel">0</strong></span>
+      <span>Fitness: <strong id="fitLabel">0</strong></span>
+    </div>
+  </header>
+
+  <main>
+    <canvas id="game"></canvas>
+
+    <aside class="panel">
+      <h2>Modos</h2>
+      <button class="mode active" data-mode="manual">Manual</button>
+      <button class="mode" data-mode="train">Treinar</button>
+      <button class="mode" data-mode="race">Corrida</button>
+
+      <h2>Pistas</h2>
+      <button class="track active" data-track="0">Interlagos</button>
+      <button class="track" data-track="1">Monza</button>
+      <button class="track" data-track="2">Mônaco</button>
+
+      <h2>Treino</h2>
+      <button id="turboBtn">Turbo: OFF</button>
+      <button id="saveBtn">Salvar</button>
+      <button id="loadBtn">Carregar</button>
+      <button id="resetBtn">Reset GA</button>
+
+      <h2>HUD</h2>
+      <p>Velocidade: <strong id="speedLabel">0</strong> km/h</p>
+      <p>Marcha: <strong id="gearLabel">N</strong></p>
+
+      <h2>Controles</h2>
+      <p><kbd>W</kbd> acelerar</p>
+      <p><kbd>S</kbd> frear</p>
+      <p><kbd>A</kbd>/<kbd>D</kbd> virar</p>
+      <p><kbd>Espaço</kbd> freio de mão</p>
+      <p>Scroll = zoom</p>
+      <p>Arrastar = câmera</p>
+    </aside>
+  </main>
+
+  <script src="rede.js"></script>
+  <script src="genetico.js"></script>
+  <script src="pista.js"></script>
+  <script src="sensores.js"></script>
+  <script src="carro.js"></script>
+  <script src="treino.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
