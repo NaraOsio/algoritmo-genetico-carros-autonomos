@@ -178,14 +178,39 @@ function drawCheckpoints() {
   ctx.restore();
 }
 
-function updateHud(car, vivos=0, best=0) {
+function updateHud(car, vivos = 0, best = 0) {
+
   document.getElementById('modeLabel').textContent = mode;
   document.getElementById('trackLabel').textContent = pista.nome;
-  document.getElementById('genLabel').textContent = Treino.geracao;
-  document.getElementById('aliveLabel').textContent = vivos;
-  document.getElementById('fitLabel').textContent = Math.round(best);
-  document.getElementById('speedLabel').textContent = car ? Math.round(car.vel * 25) : 0;
-  document.getElementById('gearLabel').textContent = car ? car.marcha : 'N';
+
+  // =========================
+  // MODO CORRIDA
+  // =========================
+  if (mode === 'race') {
+
+    document.getElementById('genLabel').textContent = '-';
+    document.getElementById('aliveLabel').textContent = '1';
+    document.getElementById('fitLabel').textContent = 'IA carregada';
+
+  }
+
+  // =========================
+  // MODO TREINO
+  // =========================
+  else {
+
+    document.getElementById('genLabel').textContent = Treino.geracao;
+    document.getElementById('aliveLabel').textContent = vivos;
+    document.getElementById('fitLabel').textContent = Math.round(best);
+
+  }
+
+
+  document.getElementById('speedLabel').textContent =
+    car ? Math.round(car.vel * 25) : 0;
+
+  document.getElementById('gearLabel').textContent =
+    car ? car.marcha : 'N';
 }
 
 function loop(ts) {

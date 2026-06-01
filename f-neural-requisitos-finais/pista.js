@@ -20,15 +20,15 @@ const PISTAS = [
     ],
     obstaculosT: [0.12,0.34,0.58,0.78]
   },
-  {
-    nome: 'Mônaco',
-    pontos: [
-      {x:180,y:210},{x:390,y:110},{x:650,y:150},{x:760,y:290},{x:670,y:420},
-      {x:900,y:500},{x:1160,y:410},{x:1270,y:560},{x:1060,y:735},{x:720,y:690},
-      {x:540,y:560},{x:310,y:670},{x:110,y:520},{x:95,y:330}
-    ],
-    obstaculosT: [0.11,0.26,0.43,0.61,0.80]
-  }
+ {
+   nome: 'Mônaco',
+   pontos: [
+     {x:180,y:210},{x:390,y:110},{x:650,y:150},{x:760,y:290},{x:670,y:420},
+     {x:900,y:500},{x:1160,y:410},{x:1270,y:560},{x:1060,y:735},{x:720,y:690},
+     {x:540,y:560},{x:310,y:670},{x:110,y:520},{x:95,y:330}
+   ],
+   obstaculosT: [0.11,0.26,0.52,0.61,0.80]
+ }
 ];
 
 function catmullRom(p0, p1, p2, p3, t) {
@@ -101,20 +101,34 @@ class Pista {
     }
   }
 
-  gerarObstaculos() {
-    for (const t of this.def.obstaculosT) {
-      const idx = Math.floor(t * this.pts.length) % this.pts.length;
-      const a = this.pts[idx];
-      const b = this.pts[(idx + 3) % this.pts.length];
-      const dx = b.x - a.x, dy = b.y - a.y;
-      const len = Math.hypot(dx, dy) || 1;
-      const nx = -dy / len, ny = dx / len;
-      const lado = Math.random() < 0.5 ? -1 : 1;
-      const r = 13;
-      const off = (this.largura / 2 - r - 4) * lado;
-      this.obstaculos.push({ x: a.x + nx * off, y: a.y + ny * off, r });
-    }
-  }
+ gerarObstaculos() {
+   for (const t of this.def.obstaculosT) {
+     const idx = Math.floor(t * this.pts.length) % this.pts.length;
+     const a = this.pts[idx];
+     const b = this.pts[(idx + 3) % this.pts.length];
+
+     const dx = b.x - a.x;
+     const dy = b.y - a.y;
+
+     const len = Math.hypot(dx, dy) || 1;
+
+     const nx = -dy / len;
+     const ny = dx / len;
+
+     const r = 13;
+
+     // Obstáculo sempre mais para a direita/lateral da pista
+     const lado = 1;
+
+     const off = (this.largura / 2 - r - 4) * lado;
+
+     this.obstaculos.push({
+       x: a.x + nx * off,
+       y: a.y + ny * off,
+       r
+     });
+   }
+ }
 
   posInicial() {
     const a = this.pts[0], b = this.pts[6];

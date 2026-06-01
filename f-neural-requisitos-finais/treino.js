@@ -32,20 +32,80 @@ const Treino = {
   update(dt) {
     let vivos = 0;
 
-    for (let i = 0; i < this.carros.length; i++) {
-      const c = this.carros[i];
+  for (let i = 0; i < this.carros.length; i++) {
 
-      if (c.vivo) {
-        c.updateIA(dt);
-        vivos++;
-      }
+    const c = this.carros[i];
 
-      this.fits[i] =
-        Math.max(
-          0,
-          c.fitness - (c.vivo ? 0 : 25000)
-        );
+    if (c.vivo) {
+      c.updateIA(dt);
+      vivos++;
     }
+
+    // =========================
+    // PUNIÇÃO POR ANDAR COLADO
+    // =========================
+   let penalidadeBorda = 0;
+
+   if (c.vivo && c.sensores && c.sensores.length > 0) {
+
+     const menorSensor =
+       Math.min(...c.sensores);
+
+     // Muito perto da parede
+     if (menorSensor < 45) {
+
+       penalidadeBorda = 30000;
+
+     }
+
+     // Relativamente perto
+     else if (menorSensor < 70) {
+
+       penalidadeBorda = 12000;
+
+     }
+   }
+
+   // =========================
+   // PUNIÇÃO POR OBSTÁCULO
+   // =========================
+   let penalidadeObstaculo = 0;
+
+   if (c.vivo && pista.obstaculos) {
+
+     for (const o of pista.obstaculos) {
+
+       const dx = c.x - o.x;
+       const dy = c.y - o.y;
+
+       const dist =
+         Math.hypot(dx, dy);
+
+       // Muito perto do obstáculo
+       if (dist < 90) {
+
+         penalidadeObstaculo += 40000;
+
+       }
+
+       // Relativamente perto
+       else if (dist < 130) {
+
+         penalidadeObstaculo += 15000;
+
+       }
+     }
+   }
+
+   this.fits[i] =
+     Math.max(
+       0,
+       c.fitness
+       - (c.vivo ? 0 : 25000)
+       - penalidadeBorda
+       - penalidadeObstaculo
+     );
+   }
 
     return vivos;
   },
